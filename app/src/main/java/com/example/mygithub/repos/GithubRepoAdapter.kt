@@ -17,7 +17,6 @@
 
 package com.example.mygithub.repos
 
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
@@ -39,7 +38,6 @@ class GithubRepoAdapter( val onClickListener: OnClickListener ) :
      */
     override fun onCreateViewHolder(parent: ViewGroup,
                                     viewType: Int): RepoViewHolder {
-        Log.i("RepoViewHolder", parent.toString())
         return RepoViewHolder.from(parent)
     }
 
@@ -48,7 +46,6 @@ class GithubRepoAdapter( val onClickListener: OnClickListener ) :
      */
     override fun onBindViewHolder(holderRepo: RepoViewHolder, position: Int) {
         val githubRepo = getItem(position)
-        Log.i("RepoViewHolder", itemCount.toString())
         holderRepo.itemView.setOnClickListener {
             onClickListener.onClick(githubRepo)
         }

@@ -1,8 +1,9 @@
 package com.example.mygithub
 
-import android.util.Log
 import android.view.View
+import android.widget.Button
 import android.widget.ImageView
+import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.net.toUri
 import androidx.databinding.BindingAdapter
@@ -16,20 +17,32 @@ import com.example.mygithub.repos.GithubRepoAdapter
 @BindingAdapter("listData")
 fun bindRecyclerView(recyclerView: RecyclerView, data: List<GithubRepo>?) {
     val adapter = recyclerView.adapter as GithubRepoAdapter
-    Log.i("BindRecyclerView", data.toString())
     adapter.submitList(data)
 }
 
 @BindingAdapter("userStatus")
 fun userLoaded(view: ConstraintLayout, githubApiStatus: GithubApiStatus) {
-    val visibility = when (githubApiStatus) {
-        GithubApiStatus.LOADING -> View.VISIBLE
-        GithubApiStatus.DONE -> View.VISIBLE
-        else -> View.INVISIBLE
+    val userImage = view.getViewById(R.id.user_image) as ImageView
+    val userText = view.getViewById(R.id.user_text) as TextView
+    val usernameText = view.getViewById(R.id.username_text) as TextView
+    val reposButton = view.getViewById(R.id.repos_button) as Button
+    when (githubApiStatus) {
+        GithubApiStatus.START, GithubApiStatus.ERROR -> {
+            view.visibility = View.INVISIBLE
+        }
+        GithubApiStatus.LOADING -> {
+            view.visibility = View.VISIBLE
+            userImage.setImageDrawable(null)
+            userText.visibility = View.INVISIBLE
+            usernameText.visibility = View.INVISIBLE
+            reposButton.visibility = View.INVISIBLE
+        }
+        GithubApiStatus.DONE -> {
+            userText.visibility = View.VISIBLE
+            usernameText.visibility = View.VISIBLE
+            reposButton.visibility = View.VISIBLE
+        }
     }
-    view.getViewById(R.id.user_image).visibility = visibility
-    view.getViewById(R.id.user_text).visibility = visibility
-    view.getViewById(R.id.repos_button).visibility = visibility
 }
 
 @BindingAdapter("imageUrl")

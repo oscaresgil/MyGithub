@@ -1,6 +1,5 @@
 package com.example.mygithub.repos
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -31,8 +30,12 @@ class ReposViewModel (private val username: String) : ViewModel() {
     private val coroutineScope = CoroutineScope(viewModelJob + Dispatchers.Main)
 
     init {
-        _status.value = GithubApiStatus.START
+        startStatus()
         getRepos()
+    }
+
+    fun startStatus(){
+        _status.value = GithubApiStatus.START
     }
 
     fun openRepoUrl(githubRepo: GithubRepo){
@@ -49,7 +52,6 @@ class ReposViewModel (private val username: String) : ViewModel() {
                 _githubRepos.value = repos
             } catch (e: Exception){
                 _status.value = GithubApiStatus.ERROR
-                Log.i("ReposViewModel", e.message + username)
                 _githubRepos.value = emptyList()
             }
         }
